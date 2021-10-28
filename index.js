@@ -10,6 +10,12 @@ var possible = (n, packs) => {
 	return null;
 }
 
+let countDecimals = (value) => {
+    if (Math.floor(value) !== value)
+        return value.toString().split(".")[1].length || 0;
+    return 0;
+}
+
 let often = (arr, n) => {
 	let result = 0;
 	for (let i = 0; i < arr.length; i++) {
@@ -22,19 +28,27 @@ let often = (arr, n) => {
 $("#calculate").click(() => {
 	packs = $("#packs").val().split(',');
 	for (let i = 0; i < packs.length; i++)
-		packs[i] = parseInt(packs[i]);
+		packs[i] = parseFloat(packs[i]);
 	packs.sort((a, b) => a - b);
 	packs.reverse();
+	let decimals = 0;
+	for (let i = 0; i < packs.length; i++) {
+		if (countDecimals(packs[i]) > decimals)
+			decimals = countDecimals(packs[i]);
+	}
+	for (let i = 0; i < packs.length; i++) {
+		packs[i] *= 10 ** decimals;
+	}
 	if (!$("#nuggets").val())
 		return;
-	let set = possible(parseInt($("#nuggets").val()), packs);
+	let set = possible(parseFloat($("#nuggets").val() * 10 ** decimals), packs);
 
 	$("#output").empty();
 	if (set) {
-		set.reverse();
+		packs.reverse();
 		let table = $("<table />");
 		for (let i = 0; i < packs.length; i++) {
-			tr = $("<tr />").append($("<td />").append(packs[i]));
+			tr = $("<tr />").append($("<td />").append(packs[i] / 10 ** decimals));
 			tr.append($("<td />").append(often(set, packs[i])));
 			table.append(tr);
 		}
