@@ -28,10 +28,10 @@ $("#calculate").click(() => {
 	if (!$("#nuggets").val())
 		return;
 	let set = possible(parseInt($("#nuggets").val()), packs);
-	set.reverse();
 
 	$("#output").empty();
 	if (set) {
+		set.reverse();
 		let table = $("<table />");
 		for (let i = 0; i < packs.length; i++) {
 			tr = $("<tr />").append($("<td />").append(packs[i]));
