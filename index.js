@@ -1,5 +1,3 @@
-$("#packs").val("4,6,9,20");
-
 var possible = (n, packs) => {
 	if (n <= 0)
 		return null;
